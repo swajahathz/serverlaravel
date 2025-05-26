@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
@@ -49,13 +49,20 @@ class UpdateAcctStopTime extends Command
             // Step 1: Update acctstoptime
             $row->acctstoptime = Carbon::now();
 
+
+            // Convert to array
+                $rowArray = (array) $row;
+
+                // Remove radacctid before insert/update
+                $rowArray = Arr::except($rowArray, ['radacctid']);
+
             //Exixt
             $find = DB::table('radacct_accounting')->where('acctuniqueid',$row->acctuniqueid)->first();
 
             // if not find insert else update where acctuniqueid 
             if(!$find){
                  // Step 2: Insert into radacct_accounting
-                 DB::table('radacct_accounting')->insert((array) $row);
+                 DB::table('radacct_accounting')->insert((array) $rowArray);
             }else{
                  // Update
                     DB::table('radacct_accounting')
