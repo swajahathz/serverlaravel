@@ -18,7 +18,7 @@ class Bad_logs_Controller extends Controller
 
        // Check if NAS records are found
        if($logs->isEmpty()){
-           return response()->json(['message' => 'Logs not founds!'], 200);
+           return response()->json($logs, 200);
        } else {
            return response()->json($logs, 200);
        }

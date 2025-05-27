@@ -67,7 +67,7 @@ class UpdateAcctStopTime extends Command
                  // Update
                     DB::table('radacct_accounting')
                         ->where('acctuniqueid', $row->acctuniqueid)
-                        ->update((array) $row);
+                        ->update((array) $rowArray);
             }
 
 
