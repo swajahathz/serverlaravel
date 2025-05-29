@@ -19,6 +19,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->command('acct:update-stop-time')->everyMinute();
+        $schedule->command('bandwidth:apply')->everyMinute();
     }
 
     /**
