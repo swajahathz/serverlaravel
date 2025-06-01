@@ -9,6 +9,7 @@ use App\Http\Controllers\Subscriber_online_Controller;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\sessionController;
 use App\Http\Controllers\KickController;
+use App\Http\Controllers\PolicyController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,13 @@ Route::get('/session_single/{subscriber}', [sessionController::class,'session_si
 Route::post('/nasadd', [NasController::class,'nasadd']);
 Route::post('/nasupdate/{id}', [NasController::class,'nasupdate']);
 Route::post('/nasdelete/{id}', [NasController::class,'nasdelete']);
+
+// ADD radgroupreply
+
+Route::post('/radgroupreplyadd', [PolicyController::class,'policyadd']);
+Route::post('/radgroupreplyupdate', [PolicyController::class,'policyupdate']);
+Route::post('/radgroupreplydelete', [PolicyController::class,'policydelete']);
+Route::post('/radgroupreplydeletebyid/{id}', [PolicyController::class,'policydeletebyid']); // CREATE for Policy delete function bulk delete
 
 
 // ADD SERVICE API

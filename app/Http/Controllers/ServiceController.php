@@ -16,7 +16,8 @@ class ServiceController extends Controller
             'code' => ['required'],
             'downrate' => ['required', 'string', 'max:255'],
             'uprate' => ['required', 'string', 'max:255'],
-            'pool_id' => ['required', 'string', 'max:255'],
+            'pool_id' => ['required'],
+            'policy_id' => ['required'],
             'pool_name' => ['required', 'string', 'max:255'],
             'custattr' => ['nullable', 'string', 'max:255']
         ]);
@@ -49,6 +50,7 @@ class ServiceController extends Controller
             'downrate' => ['required', 'string', 'max:255'],
             'uprate' => ['required', 'string', 'max:255'],
             'pool_id' => ['required', 'string', 'max:255'],
+            'policy_id' => ['required', 'string', 'max:255'],
             'pool_name' => ['required', 'string', 'max:255'],
             'custattr' => ['nullable', 'string', 'max:255']
         ]);

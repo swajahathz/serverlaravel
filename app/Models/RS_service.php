@@ -17,6 +17,7 @@ class RS_service extends Model
         'downrate',
         'uprate',
         'pool_id',
+        'policy_id',
         'pool_name',
         'custattr',
         'user_id',
