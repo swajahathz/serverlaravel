@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RS_service;
+use App\Models\RS_subscriber;
+use App\Models\RS_radgroupreply;
+use App\Models\RS_radusergroup;
+
 
 class ServiceController extends Controller
 {
@@ -64,6 +68,40 @@ class ServiceController extends Controller
 
        $service_update = RS_service::where('id', $update_service_id)
        ->first();
+
+
+       if($validatedData['policy_id'] == 0){
+
+            // FIND SERVICE USERS
+            $users_list = RS_subscriber::where('srvid',$srvid)->get();
+
+
+            foreach ($users_list as $user) {
+                     RS_radusergroup::where('username', $user->username)->delete();
+            }
+            
+
+       }
+       else{
+
+            $groupname = RS_radgroupreply::where('group_id',$validatedData['policy_id'])->first();
+
+            $users_list = RS_subscriber::where('srvid',$srvid)->get();
+
+            foreach ($users_list as $user) {
+                     RS_radusergroup::where('username', $user->username)->delete();
+            }
+
+            foreach ($users_list as $user) {
+
+                   RS_radusergroup::create([
+                            'username'  => $user->username,
+                            'groupname' => $groupname->groupname
+                        ]);
+            }
+
+
+       }
        
 
        // Update the NAS record with the validated data

@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RS_subscriber;
+use App\Models\RS_service;
+use App\Models\RS_radgroupreply;
+use App\Models\RS_radusergroup;
 
 class SubscriberController extends Controller
 {
@@ -45,9 +48,24 @@ class SubscriberController extends Controller
         // $validatedData['nasname'] = $validatedData['server_ip'];
         // $validatedData['type'] = "Mikro";
 
+        // FIND SERVICE
+        $service = RS_service::where('srvid',$validatedData['srvid'])->first();
 
-        // Create the NAS record
-        $subscriber = RS_subscriber::create($validatedData);
+        if($service->policy_id != 0){
+
+            // FIND GROUP
+            $group = RS_radgroupreply::where('group_id',$service->policy_id)->first();
+
+            RS_radusergroup::create([
+                                'username'  => $validatedData['username'],
+                                'groupname' => $group->groupname
+                            ]);
+
+
+        }
+
+          // Create the NAS record
+            $subscriber = RS_subscriber::create($validatedData);
 
         $subscriberRecords = RS_subscriber::all();
 
@@ -83,6 +101,7 @@ class SubscriberController extends Controller
         
 
         // Delete the NAS record
+        RS_radusergroup::where('username',$id)->delete();
         $subscriber_delete->delete();
 
         // Return a JSON response with a success message
@@ -133,6 +152,25 @@ class SubscriberController extends Controller
 
                 $subscriber_update = RS_subscriber::where('id', $update_subscriber_id)
                 ->first();
+
+                // FIND SRVID policy id
+                $service = RS_service::where('srvid',$validatedData['srvid'])->first();
+
+                // FIND GROUP NAME
+                $group = RS_radgroupreply::where('group_id',$service->policy_id)->first();
+
+                if($service->policy_id == 0){
+
+                    RS_radusergroup::where('username',$username)->delete();
+
+                }else{
+
+                    RS_radusergroup::where('username',$username)->delete();
+                    RS_radusergroup::create([
+                                'username'  => $username,
+                                'groupname' => $group->groupname
+                            ]);
+                }
 
 
                 $subscriber_update->update($validatedData);

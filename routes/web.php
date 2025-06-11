@@ -51,6 +51,7 @@ Route::post('/nasdelete/{id}', [NasController::class,'nasdelete']);
 
 Route::post('/radgroupreplyadd', [PolicyController::class,'policyadd']);
 Route::post('/radgroupreplyupdate', [PolicyController::class,'policyupdate']);
+Route::post('/radgroupreplynameupdate', [PolicyController::class,'policynameupdate']);
 Route::post('/radgroupreplydelete', [PolicyController::class,'policydelete']);
 Route::post('/radgroupreplydeletebyid/{id}', [PolicyController::class,'policydeletebyid']); // CREATE for Policy delete function bulk delete
 

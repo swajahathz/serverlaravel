@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\RS_radgroupreply;
+use App\Models\RS_service;
+use App\Models\RS_radusergroup;
+use App\Models\RS_subscriber;
 
 
 class PolicyController extends Controller
@@ -37,7 +40,7 @@ class PolicyController extends Controller
     }
 
 
-     // NAS UPDATE API 
+     // UPDATE RADGROUPREPLY SINGLE
      public function policyupdate(Request $request){
     
          // Validate request data
@@ -77,6 +80,51 @@ class PolicyController extends Controller
 
     }
 
+
+    // UPDATE RADGROUPREPLY NAME BULK
+     public function policynameupdate(Request $request){
+    
+       $validatedData = $request->validate([
+    'groupname' => ['required', 'string', 'max:255'],
+    'group_id' => ['required'],
+        ]);
+
+        // Update the groupname in the RS_radgroupreply table
+        $radgroupreply_update = RS_radgroupreply::where('group_id', $validatedData['group_id'])
+            ->update(['groupname' => $validatedData['groupname']]);
+
+
+
+        // FIND Service where user group id
+
+        $service = RS_service::where('policy_id', $validatedData['group_id'])
+        ->get();
+
+        foreach ($service as $services) {
+                     
+                    // FIND USER
+                    $user = RS_subscriber::where('srvid',$services->srvid)->get();
+
+                    foreach ($user as $users) {
+                     
+                    // FIND USER
+                    $radusergroup_update = RS_radusergroup::where('username', $users->username)
+                        ->update(['groupname' => $validatedData['groupname']]);
+
+            }
+
+        }
+        
+
+
+        // Return a JSON response with the updated NAS record and a success message
+        return response()->json([
+            'nas' => $radgroupreply_update,
+            'message' => 'Policy successfully updated',
+            'status' => 1
+        ], 200);
+
+    }
 
      // NAS DELETE API 
      public function policydelete(Request $request){
@@ -147,5 +195,8 @@ class PolicyController extends Controller
                         'status' => 1
                     ], 200);
                 }
+
+
+    
 
 }
