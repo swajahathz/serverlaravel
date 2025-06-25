@@ -1,5 +1,7 @@
 <?php
 
+// web latest 4
+
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\SubscriberController;
