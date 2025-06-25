@@ -8,12 +8,36 @@ use App\Models\RS_subscriber_online;
 class Subscriber_online_Controller extends Controller
 {
     // User LIST API 
-    public function subscriber_online(Request $request, $owner_id){
+    public function subscriber_online(Request $request, $owner_id,$all){
 
 
-        $users = RS_subscriber_online::where('acctstoptime',null)
-        ->where('ownerId', $owner_id)
-        ->get();
+        if($all != 1){
+
+            if($all == 2){
+                    $m = "adminId";
+            }elseif($all == 3){
+                    $m = "franchiseId";
+            }elseif($all == 4){
+                    $m = "dealerId";
+            }elseif($all == 5){
+                    $m = "subdealerId";
+            }elseif($all == 5){
+                    $m = "juniordealerId";
+            }
+
+            $users = RS_subscriber_online::where('acctstoptime',null)
+                                            ->where($m, $owner_id)
+                                            ->get();
+
+                
+        }else{
+               $users = RS_subscriber_online::where('acctstoptime',null)
+                        ->where('ownerId', $owner_id)
+                        ->get();     
+        }
+
+
+        
 
 
        // Check if NAS records are found

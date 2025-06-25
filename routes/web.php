@@ -28,7 +28,7 @@ Route::get('/', function () {
 
 
 
-Route::get('/subscriber_online/{owner_id}', [Subscriber_online_Controller::class,'subscriber_online']);
+Route::get('/subscriber_online/{owner_id}/{all}', [Subscriber_online_Controller::class,'subscriber_online']);
 Route::get('/subscriber_online_count/{id}/{roles_id}', [Subscriber_online_Controller::class,'subscriber_online_count']);
 
 // SINGLE Online Status
